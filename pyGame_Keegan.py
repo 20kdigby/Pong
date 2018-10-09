@@ -31,19 +31,19 @@ def movePaddle():
         bSpeed = 0
     if padB.top <= 0 and bSpeed <0:
         bSpeed = 0
-    padA = padB.move(0, bSpeed)
+    padB = padB.move(0, bSpeed)
     pygame.draw.rect(window, blue, padB)
     
 
-def collide(rect1, rect2):
-    if rect1.colliderect(rect2):
+def collide(ballRect, rect1, rect2):
+    if ballRect.colliderect(rect2):
         print("Collide")
-    if rect2.colliderect(rect2):
+    if ballRect.colliderect(rect1):
         print("Collide")
 
 speedx = 3
 speedy = 3
-screen_size = (1000, 600)
+screen_size = (900, 600)
 black = (0, 0, 0)
 thickness = 0
 red = (255, 0, 0)
@@ -51,10 +51,10 @@ orange = (255, 165, 0)
 blue = (0, 0, 255)
 white = (255, 255, 255)
 timer = pygame.time.Clock()
-location = [500, 300]
+location = [450, 300]
 radius = 20
 padA = pygame.Rect((0, 0), (20, 100))
-padB = pygame.Rect((1000, 0), (20, 100))
+padB = pygame.Rect((880, 0), (20, 100))
 ballRect= pygame.Rect((location[0]-radius, location[1]-radius), (radius *2, radius*2))
 window = pygame.display.set_mode(screen_size)
 fps = 60
@@ -64,31 +64,34 @@ bSpeed = 0
 while True:
 
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
+        
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
+            if event.key == pygame.K_w:
                 aSpeed = -2
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_DOWN:
+            if event.key == pygame.K_s:
                 aSpeed = 2
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+            if event.key == pygame.K_w or event.key == pygame.K_s:
                 aSpeed= 0
-
+                
+        if event.type == pygame.QUIT:
+            sys.exit()
+            
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_8:
+            if event.key == pygame.K_UP:
                 bSpeed = -2
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_2:
+            if event.key == pygame.K_DOWN:
                 bSpeed = 2
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_8 or event.key == pygame.K_2:
+            if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 bSpeed= 0
+
 
 
     movePaddle()
     moveBall()
     window.fill(orange)
     timer.tick(fps)
-    collide(ballRect, padA)
+    collide(ballRect, padA, padB)
